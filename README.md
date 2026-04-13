@@ -1,4 +1,4 @@
-# 💸 Neon Expense Splitter
+# 💸 Expense Splitter
 
 A sleek, **MERN-stack** inspired web application designed to help friends and groups track shared expenses and calculate settlements with a modern, high-contrast **Neon Dark UI**.
 
