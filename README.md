@@ -1,57 +1,54 @@
-💸 Expense Splitter
-A sleek, MERN-stack inspired web application designed to help friends and groups track shared expenses and calculate settlements with a modern, high-contrast Neon Dark UI.
+# 💸 Neon Expense Splitter
 
-✨ Features
-User Management: Add users with their names and email addresses.
+A sleek, **MERN-stack** inspired web application designed to help friends and groups track shared expenses and calculate settlements with a modern, high-contrast **Neon Dark UI**.
 
-Group Creation: Organize users into specific groups (e.g., "Goa Trip", "Roommates").
+## ✨ Features
 
-Expense Tracking: Log expenses, select who paid, and choose exactly who is splitting the bill.
+* **User Management:** Add users with their names and email addresses.
+* **Group Creation:** Organize users into specific groups (e.g., "Goa Trip", "Roommates").
+* **Expense Tracking:** Log expenses, select who paid, and choose exactly who is splitting the bill.
+* **Smart Settlements:** Automatically calculates "who owes whom" to settle all debts in the most efficient way.
+* **Cyberpunk Aesthetic:** High-contrast dark theme with neon purple and cyan accents.
 
-Smart Settlements: Automatically calculates "who owes whom" to settle all debts in the most efficient way.
+---
 
-Cyberpunk Aesthetic: High-contrast dark theme with neon purple and cyan accents.
+## 🛠️ Tech Stack
 
-🛠️ Tech Stack
-Frontend: HTML5, CSS3 (Custom Neon Dark Theme), Vanilla JavaScript (ES6+).
+* **Frontend:** HTML5, CSS3 (Custom Neon Dark Theme), Vanilla JavaScript (ES6+).
+* **Backend:** Node.js, Express.js.
+* **Database:** MongoDB (via Mongoose ODM).
+* **Architecture:** MVC (Models, Views, Controllers) for clean and scalable code.
 
-Backend: Node.js, Express.js.
+---
 
-Database: MongoDB (via Mongoose ODM).
+## 🚀 Getting Started
 
-Architecture: MVC (Models, Views, Controllers) for clean and scalable code.
+### 1. Prerequisites
+* [Node.js](https://nodejs.org/) installed on your machine.
+* [MongoDB](https://www.mongodb.com/) (Local or Atlas) connection string.
 
-🚀 Getting Started
-1. Prerequisites
-Node.js installed on your machine.
+### 2. Installation
+1.  Clone the repository:
+    ```bash
+    git clone [https://github.com/Ragavan762006/Expense_Splitter.git](https://github.com/Ragavan762006/Expense_Splitter.git)
+    cd Expense_Splitter
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Set up your environment variables:
+    Create a `.env` file in the root directory and add:
+    ```text
+    PORT=3000
+    MONGO_URI=your_mongodb_connection_string
+    ```
 
-MongoDB (Local or Atlas) connection string.
-
-2. Installation
-Clone the repository:
-
-Bash
-git clone https://github.com/Ragavan762006/Expense_Splitter.git
-cd Expense_Splitter
-Install dependencies:
-
-Bash
-npm install
-Set up your environment variables:
-Create a .env file in the root directory and add:
-
-Plaintext
-PORT=3000
-MONGO_URI=your_mongodb_connection_string
-3. Running the App
+### 3. Running the App
 Start the server:
-
-Bash
+```bash
 npm start
-Open your browser and navigate to http://localhost:3000.
 
-📁 Project Structure
-Plaintext
 ├── models/         # Mongoose Schemas (User, Group, Expense)
 ├── routes/         # Express API Endpoints
 ├── services/       # Business logic (Balance calculations)
