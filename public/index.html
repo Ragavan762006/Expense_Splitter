@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title> Expense Splitter</title>
+  <style>
+    /* Reset and Base Styles */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-dark: #0a0b10;
+      --card-bg: #161b22;
+      --accent-primary: #7c3aed; /* Electric Purple */
+      --accent-secondary: #06b6d4; /* Neon Cyan */
+      --text-main: #f8fafc;
+      --text-dim: #94a3b8;
+      --border-color: #334155;
+    }
+
+    body { 
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* Header with Gradient Glow */
+    header { 
+      background: linear-gradient(135deg, #1e1b4b 0%, #0a0b10 100%);
+      padding: 2.5rem 1rem;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: var(--accent-secondary);
+      border-bottom: 2px solid var(--accent-primary);
+      text-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+    }
+
+    .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+
+    /* Solid Dark Cards */
+    .card { 
+      background: var(--card-bg);
+      border-radius: 12px; 
+      padding: 1.8rem; 
+      margin-bottom: 2rem; 
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    h2 { 
+      font-size: 1.25rem; 
+      margin-bottom: 1.5rem; 
+      color: var(--accent-secondary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2::before {
+      content: "";
+      width: 4px;
+      height: 20px;
+      background: var(--accent-primary);
+      display: inline-block;
+      border-radius: 2px;
+    }
+
+    /* Input & Select Styles */
+    input, select { 
+      width: 100%; 
+      padding: 0.8rem 1rem; 
+      margin-bottom: 1.2rem; 
+      background-color: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 8px; 
+      font-size: 1rem; 
+      color: var(--text-main);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent-secondary);
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+    }
+
+    /* High Contrast Buttons */
+    button { 
+      background: var(--accent-primary); 
+      color: white; 
+      border: none;
+      padding: 0.8rem 1.5rem; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-size: 1rem; 
+      font-weight: 700;
+      width: 100%;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    button:hover { 
+      background: #8b5cf6;
+      transform: translateY(-1px);
+      box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
+    }
+
+    button.secondary {
+      background: transparent;
+      border: 1px solid var(--accent-primary);
+      color: var(--accent-primary);
+      margin-bottom: 1rem;
+    }
+
+    button.secondary:hover {
+      background: rgba(124, 58, 237, 0.1);
+    }
+
+    /* Checkbox list styling */
+    .checkbox-group {
+      background: #0d1117;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.2rem;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid var(--border-color);
+    }
+
+    label { 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+      cursor: pointer; 
+      margin-bottom: 10px;
+      color: var(--text-dim);
+      font-size: 0.95rem;
+    }
+
+    label:hover { color: var(--text-main); }
+
+    input[type="checkbox"] { 
+      width: 18px; 
+      height: 18px; 
+      margin-bottom: 0; 
+      accent-color: var(--accent-secondary); 
+    }
+
+    /* Result Messages */
+    .result { 
+      margin-top: 1.2rem; 
+      font-size: 0.95rem; 
+      padding: 0.8rem;
+      border-radius: 6px;
+    }
+
+    .success { color: #10b981; font-weight: bold; background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; }
+    .error { color: #ef4444; font-weight: bold; background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; }
+
+    /* Balance Results */
+    .balance-item { 
+      background: #1e293b;
+      padding: 1.2rem; 
+      border-radius: 10px; 
+      margin-bottom: 0.8rem; 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 4px solid var(--accent-secondary);
+    }
+
+    .balance-amount {
+      color: var(--accent-secondary);
+      font-weight: 800;
+      font-size: 1.2rem;
+    }
+
+  </style>
+</head>
+<body>
+
+<header>💸 EXPENSE SPLITTER</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Add New User</h2>
+    <input type="text" id="userName" placeholder="Full Name" />
+    <input type="email" id="userEmail" placeholder="Email Address" />
+    <button onclick="createUser()">Add User</button>
+    <div id="userResult" class="result" style="display:none;"></div>
+  </div>
+
+  <div class="card">
+    <h2>Manage Groups</h2>
+    <input type="text" id="groupName" placeholder="Group Name (e.g., Road Trip)" />
+    <button onclick="loadUsers()" class="secondary">Refresh User List</button>
+    <div class="checkbox-group" id="userCheckboxes"></div>
+    <button onclick="createGroup()">Create Group</button>
+    <div id="groupResult" class="result" style="display:none;"></div>
+  </div>
+
+  <div class="card">
+    <h2>Log Expense</h2>
+    <select id="expenseGroup"><option value="">Select Group</option></select>
+    <select id="paidBy"><option value="">Who Paid?</option></select>
+    <input type="number" id="expenseAmount" placeholder="Amount (₹)" />
+    <input type="text" id="expenseDesc" placeholder="Description (e.g. Lunch)" />
+    <p style="color: var(--text-dim); margin-bottom: 0.5rem; font-size: 0.8rem;">SPLIT AMONG:</p>
+    <div class="checkbox-group" id="splitCheckboxes"></div>
+    <button onclick="addExpense()">Add Expense</button>
+    <div id="expenseResult" class="result" style="display:none;"></div>
+  </div>
+
+  <div class="card">
+    <h2>Settlement Summary</h2>
+    <select id="balanceGroup"><option value="">Select Group to Calculate</option></select>
+    <button onclick="getBalances()">View Who Owes Whom</button>
+    <div id="balanceResult" style="margin-top:1.5rem;"></div>
+  </div>
+
+</div>
+
+<script>
+  const API = 'http://localhost:3000/api';
+  let allUsers = [];
+  let allGroups = [];
+
+  function showMsg(id, msg, isError = false) {
+    const el = document.getElementById(id);
+    el.style.display = 'block';
+    el.className = isError ? 'result error' : 'result success';
+    el.innerHTML = msg;
+  }
+
+  async function createUser() {
+    const name = document.getElementById('userName').value.trim();
+    const email = document.getElementById('userEmail').value.trim();
+    if (!name || !email) return alert('Fill name and email');
+    try {
+      const res = await fetch(`${API}/users`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showMsg('userResult', `User "${data.name}" added successfully!`);
+        document.getElementById('userName').value = '';
+        document.getElementById('userEmail').value = '';
+      } else {
+        showMsg('userResult', data.error, true);
+      }
+    } catch (err) { showMsg('userResult', 'Server Error', true); }
+  }
+
+  async function loadUsers() {
+    const res = await fetch(`${API}/users`);
+    allUsers = await res.json();
+    
+    const uCheck = document.getElementById('userCheckboxes');
+    uCheck.innerHTML = allUsers.map(u => 
+      `<label><input type="checkbox" value="${u._id}" name="groupMember"> ${u.name}</label>`
+    ).join('');
+
+    const paidBy = document.getElementById('paidBy');
+    paidBy.innerHTML = '<option value="">Who Paid?</option>' + 
+      allUsers.map(u => `<option value="${u._id}">${u.name}</option>`).join('');
+
+    const sCheck = document.getElementById('splitCheckboxes');
+    sCheck.innerHTML = allUsers.map(u => 
+      `<label><input type="checkbox" value="${u._id}" name="splitMember"> ${u.name}</label>`
+    ).join('');
+  }
+
+  async function createGroup() {
+    const name = document.getElementById('groupName').value.trim();
+    const checked = [...document.querySelectorAll('input[name="groupMember"]:checked')];
+    const members = checked.map(c => c.value);
+    if (!name || members.length < 2) return alert('Enter group name and select 2+ members');
+    const res = await fetch(`${API}/groups`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, members })
+    });
+    if (res.ok) {
+      showMsg('groupResult', 'Group created successfully!');
+      loadGroups();
+    }
+  }
+
+  async function loadGroups() {
+    const res = await fetch(`${API}/groups`);
+    allGroups = await res.json();
+    ['expenseGroup', 'balanceGroup'].forEach(id => {
+      document.getElementById(id).innerHTML = '<option value="">Select Group</option>' + 
+        allGroups.map(g => `<option value="${g._id}">${g.name}</option>`).join('');
+    });
+  }
+
+  async function addExpense() {
+    const group = document.getElementById('expenseGroup').value;
+    const paidBy = document.getElementById('paidBy').value;
+    const amount = parseFloat(document.getElementById('expenseAmount').value);
+    const description = document.getElementById('expenseDesc').value.trim();
+    const checked = [...document.querySelectorAll('input[name="splitMember"]:checked')];
+    const splitAmong = checked.map(c => c.value);
+    
+    if (!group || !paidBy || !amount || splitAmong.length === 0) return alert('Fill all fields');
+
+    const res = await fetch(`${API}/expenses`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ group, paidBy, amount, description, splitAmong })
+    });
+    if (res.ok) showMsg('expenseResult', `Added ₹${amount} for ${description}`);
+  }
+
+  async function getBalances() {
+    const groupId = document.getElementById('balanceGroup').value;
+    if (!groupId) return alert('Select a group');
+    const res = await fetch(`${API}/balances/${groupId}`);
+    const data = await res.json();
+    const container = document.getElementById('balanceResult');
+    
+    if (data.length === 0) {
+      container.innerHTML = '<div class="success">All settled up!</div>';
+      return;
+    }
+
+    const usersRes = await fetch(`${API}/users`);
+    const users = await usersRes.json();
+    const nameMap = {};
+    users.forEach(u => nameMap[u._id] = u.name);
+
+    container.innerHTML = data.map(t =>
+      `<div class="balance-item">
+        <span><strong>${nameMap[t.from] || 'User'}</strong> owes <strong>${nameMap[t.to] || 'User'}</strong></span>
+        <span class="balance-amount">₹${t.amount}</span>
+      </div>`
+    ).join('');
+  }
+
+  loadGroups();
+  loadUsers();
+</script>
+
+</body>
+</html>
